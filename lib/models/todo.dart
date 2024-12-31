@@ -1,17 +1,25 @@
-import 'package:hive/hive.dart';
-
-part 'todo.g.dart';
-
-@HiveType(typeId: 0)
-class Todo extends HiveObject {
-  @HiveField(0)
+class Todo {
   final String title;
-
-  @HiveField(1)
   bool isCompleted;
 
   Todo({
     required this.title,
     this.isCompleted = false,
   });
+
+  // Convert a Todo to a Map
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'isCompleted': isCompleted,
+    };
+  }
+
+  // Create a Todo from a Map
+  factory Todo.fromJson(Map<String, dynamic> json) {
+    return Todo(
+      title: json['title'],
+      isCompleted: json['isCompleted'] ?? false,
+    );
+  }
 }

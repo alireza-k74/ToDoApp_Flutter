@@ -1,30 +1,36 @@
 import 'package:bloc/bloc.dart';
-import 'package:hive/hive.dart';
 
 import 'package:todoapp_flutter/models/todo.dart';
+import 'package:todoapp_flutter/repository/todo_repository.dart';
 
 class TodoCubit extends Cubit<List<Todo>> {
-  final Box<Todo> todoBox;
+  final TodoRepository repository;
 
-  TodoCubit(this.todoBox) : super(todoBox.values.toList());
-
-  void addTodo(String title) {
-    final todo = Todo(title: title);
-    todoBox.add(todo);
-    emit(todoBox.values.toList());
+  TodoCubit(this.repository) : super([]) {
+    loadTodos();
   }
 
-  void toggleTodoCompletion(int index) {
-    final todo = todoBox.getAt(index);
-    if (todo != null) {
-      todo.isCompleted = !todo.isCompleted;
-      todo.save();
-      emit(todoBox.values.toList());
-    }
+  void loadTodos() async {
+    final todos = await repository.getTodos();
+    emit(todos);
   }
 
-  void deleteTodoAt(int index) {
-    todoBox.deleteAt(index);
-    emit(todoBox.values.toList());
+  void addTodo(String title) async {
+    final List<Todo> todos = List.from(state)..add(Todo(title: title));
+    await repository.saveTodos(todos);
+    emit(todos);
+  }
+
+  void toggleTodoCompletion(int index) async {
+    final List<Todo> todos = List.from(state);
+    todos[index].isCompleted = !todos[index].isCompleted;
+    await repository.saveTodos(todos);
+    emit(todos);
+  }
+
+  void deleteTodoAt(int index) async {
+    final List<Todo> todos = List.from(state)..removeAt(index);
+    await repository.saveTodos(todos);
+    emit(todos);
   }
 }

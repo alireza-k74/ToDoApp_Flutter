@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:todoapp_flutter/blocs/todo_cubit.dart';
 
 class AddTaskScreen extends StatelessWidget {
   final TextEditingController _controller = TextEditingController();
-
-  AddTaskScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

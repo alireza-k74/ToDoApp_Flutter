@@ -1,18 +1,25 @@
-import 'package:hive/hive.dart';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:todoapp_flutter/models/todo.dart';
 
 class TodoRepository {
-  final Box<Todo> todoBox;
+  static const String todoKey = 'todos';
 
-  TodoRepository(this.todoBox);
+  Future<List<Todo>> getTodos() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? todosJson = prefs.getString(todoKey);
+    if (todosJson == null) {
+      return [];
+    }
+    final List<dynamic> jsonList = jsonDecode(todosJson);
+    return jsonList.map((json) => Todo.fromJson(json)).toList();
+  }
 
-  List<Todo> getTodos() => todoBox.values.toList();
-
-  void addTodo(Todo todo) => todoBox.add(todo);
-
-  void deleteTodoAt(int index) => todoBox.deleteAt(index);
-
-  void updateTodoAt(int index, Todo todo) {
-    todoBox.putAt(index, todo);
+  Future<void> saveTodos(List<Todo> todos) async {
+    final prefs = await SharedPreferences.getInstance();
+    final String todosJson =
+        jsonEncode(todos.map((todo) => todo.toJson()).toList());
+    await prefs.setString(todoKey, todosJson);
   }
 }
