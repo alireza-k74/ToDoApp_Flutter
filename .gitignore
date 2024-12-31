@@ -1,0 +1,48 @@
+# Flutter/Dart/Pub related
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+
+# Built application files
+build/
+
+# Other
+*.iml
+*.hprof
+*.log
+*.keystore
+*.class
+
+# IntelliJ related
+.idea/
+*.ipr
+*.iws
+*.bak
+*.swp
+
+# VS Code related
+.vscode/
+
+# MacOS related
+.DS_Store
+
+# Linux related
+*.lock
+
+# iOS related
+ios/Flutter/Flutter.framework/
+ios/Flutter/Flutter.podspec
+ios/Podfile.lock
+ios/Pods/
+ios/Runner.xcworkspace/
+ios/Generated.xcconfig
+ios/.symlinks/
+ios/Flutter/Flutter.xcframework/
+
+# Android related
+android/.gradle/
+android/app/debug.keystore
+android/app/release.keystore
